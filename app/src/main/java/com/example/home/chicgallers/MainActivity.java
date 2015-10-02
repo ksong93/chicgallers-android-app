@@ -1,53 +1,60 @@
 package com.example.home.chicgallers;
 
-import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
 
-public class MainActivity extends AppCompatActivity {
+import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.view.KeyEvent;
+import android.webkit.DownloadListener;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+
+import com.example.home.chicgallers.R;
+
+public class MainActivity extends Activity {
+    WebView myWebView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+        myWebView = (WebView) findViewById(R.id.webView1);
+        myWebView.getSettings().setJavaScriptEnabled(true); // 자바스크립트를 사용
+        myWebView.loadUrl("http://lute.fantazm.net/");     // url
+        // file:///abc/abc.html 처럼 사용할 수 있습니다.
+        myWebView.setWebViewClient(new myWebViewClient());
+        // 다운 로드 할 수 있도록 해주는 함수
+        myWebView.setDownloadListener(new DownloadListener() {
+            public void onDownloadStart(String url, String userAgent, String contentDisposition, String mimetype, long contentLength) {
+                // 다운로드 파일 웹 브라우저 사용
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setType(mimetype);
+                intent.setData(Uri.parse(url));
+                startActivity(intent);
             }
         });
     }
 
+    // 디바이스 기기의 back 버튼 인식
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present
-        // github test.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if ((keyCode == KeyEvent.KEYCODE_BACK) && myWebView.canGoBack()) {
+            myWebView.goBack();
             return true;
         }
-
-        return super.onOptionsItemSelected(item);
+        return super.onKeyDown(keyCode, event);
     }
-}
+
+    // 웹 뷰 내부의 URL 인식
+    // 웹 뷰 내부의 URL 인식
+    private class myWebViewClient extends WebViewClient {
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+
+                view.loadUrl(url);
+                return true;
+            }
+        }
+    }
+

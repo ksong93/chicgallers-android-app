@@ -1,8 +1,6 @@
 package com.example.home.chicgallers;
 
 
-
-
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
@@ -12,7 +10,7 @@ import android.webkit.DownloadListener;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import com.example.home.myapplication.R;
+import com.example.home.chicgallers.R;
 
 public class MainActivity extends Activity {
     WebView myWebView;
@@ -53,21 +51,10 @@ public class MainActivity extends Activity {
     private class myWebViewClient extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            // 전화걸기 (퍼미션설정) Intent.ACTION_CALL , Intent.ACTION_DIAL
-            if (url.contains("tel:")) {
-                startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(url)));
-                return true;
-            }
-            // 메일 보내기 Intent.ACTION_SENDTO
-            else if (url.contains("mailto:")) {
-                startActivity(new Intent(Intent.ACTION_SENDTO, Uri.parse(url)));
-                return true;
-            }
-            // 웹 화면 띄우기
-            else {
+
                 view.loadUrl(url);
                 return true;
             }
         }
     }
-}
+

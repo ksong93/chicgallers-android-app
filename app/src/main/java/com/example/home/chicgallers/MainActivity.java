@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.View;
 import android.webkit.DownloadListener;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -21,7 +22,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         myWebView = (WebView) findViewById(R.id.webView1);
         myWebView.getSettings().setJavaScriptEnabled(true); // 자바스크립트를 사용
-        myWebView.loadUrl("http://lute.fantazm.net/");     // url
+        myWebView.loadUrl("http://fantazm.net/mabi/");     // url
         // file:///abc/abc.html 처럼 사용할 수 있습니다.
         myWebView.setWebViewClient(new myWebViewClient());
         // 다운 로드 할 수 있도록 해주는 함수
@@ -44,6 +45,10 @@ public class MainActivity extends Activity {
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    public void onClick(View view) {
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://lute.fantazm.net")));
     }
 
     // 웹 뷰 내부의 URL 인식

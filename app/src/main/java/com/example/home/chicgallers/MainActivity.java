@@ -10,7 +10,6 @@ import android.view.View;
 import android.webkit.DownloadListener;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-
 import com.example.home.chicgallers.R;
 
 public class MainActivity extends Activity {
@@ -25,6 +24,11 @@ public class MainActivity extends Activity {
         myWebView.loadUrl("http://fantazm.net/mabi/");     // url
         // file:///abc/abc.html 처럼 사용할 수 있습니다.
         myWebView.setWebViewClient(new myWebViewClient());
+
+        //CookieSyncManager.createInstance(context);
+      //  CookieSyncManager.getInstance().startSync();
+    //    CookieSyncManager.getInstance().stopSync();
+      //  CookieSyncManager.getInstance().sync();
         // 다운 로드 할 수 있도록 해주는 함수
         myWebView.setDownloadListener(new DownloadListener() {
             public void onDownloadStart(String url, String userAgent, String contentDisposition, String mimetype, long contentLength) {
@@ -56,9 +60,11 @@ public class MainActivity extends Activity {
     private class myWebViewClient extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-
-                view.loadUrl(url);
-                return true;
+                if (view==myWebView){
+                    view.loadUrl(url);
+                    return true;
+                }
+                return false;
             }
         }
     }
